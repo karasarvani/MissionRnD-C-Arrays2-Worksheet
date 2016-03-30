@@ -19,7 +19,45 @@ struct transaction {
 	char date[11];
 	char description[20];
 };
-
-int countGreaterNumbers(struct transaction *Arr, int len, char *date) {
-	return -1;
+int verify_greater(char *str, int index_arr, char *date)
+{
+	int index;
+	for (index = 0; str[index] != '\0'; index++)
+	{
+		if (str[index] != date[index])
+		{
+			return -1;
+		}
+	}
+	if (str[index] == '\0' && date[index] == '\0')
+		return index_arr;
 }
+int countGreaterNumbers(struct transaction *Arr, int len, char *date) {
+	int index, result, prev_result = -1;
+	if (Arr&&date&&len>0)
+	{
+		for (index = 0; index<len; index++)
+		{
+			result = verify_greater(Arr[index].date, index, date);
+			if ((prev_result >= 0) && (result == -1))
+			{
+				result = prev_result;
+				break;
+			}
+			prev_result = result;
+		}
+		if (result == -1 || result == len - 1)
+		{
+			return 0;
+		}
+		else
+		{
+			return len - result - 1;
+		}
+	}
+	else
+		return -1;
+
+}
+
+
